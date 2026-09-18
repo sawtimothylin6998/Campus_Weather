@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#12a8d6">
+
+    <title>Pookie Bear Campus Explorer</title>
+
+    <link rel="icon" type="image/png" href="pookie-bear-icon.png">
+
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin=""
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+    <script
+            src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""
+            defer
+    ></script>
+
+    <script src="places.js" defer></script>
+</head>
+
+<body class="explorer">
+<main>
+    <header>
+        <a
+                class="brand-lockup"
+                href="index.html"
+                aria-label="Pookie Bear Campus Explorer home"
+        >
+            <img src="pookie-bear-icon.png" alt="Pookie Bear icon">
+
+            <span>
+          <strong>Pookie Bear</strong>
+          <small>Campus Explorer</small>
+        </span>
+        </a>
+
+        <h1>Where would you like to go?</h1>
+
+        <p>
+            Find a country or city. Explore its weather, currency and news.
+        </p>
+    </header>
+
+    <form id="place-search">
+        <label for="place-query">Country or city</label>
+
+        <div class="controls">
+            <input
+                    id="place-query"
+                    type="search"
+                    placeholder="Try Myanmar, Bangkok or Paris"
+                    minlength="2"
+                    maxlength="100"
+                    autocomplete="off"
+                    required
+            >
+
+            <button type="submit">Explore</button>
+        </div>
+    </form>
+
+    <button id="nearby" type="button" class="secondary">
+        Use my location
+    </button>
+
+    <p class="muted">
+        Optional: share rounded coordinates with Open-Meteo to open nearby
+        weather. Your browser will ask permission.
+    </p>
+
+    <p id="place-status" role="status" aria-live="polite">
+        Start with a country or city name.
+    </p>
+
+    <ul id="place-matches" aria-label="Matching places"></ul>
+
+    <section
+            id="place-preview"
+            hidden
+            aria-label="Destination preview"
+    >
+        <div class="preview-grid">
+            <div>
+                <a id="place-link" class="photo-link">
+                    <img id="place-photo" alt="" hidden>
+
+                    <span id="photo-placeholder">
+              Finding a destination photo…
+            </span>
+
+                    <div class="photo-label">
+                        <span id="place-type"></span>
+                        <h2 id="place-name"></h2>
+                        <p>Open destination →</p>
+                    </div>
+                </a>
+
+                <p id="photo-credit" class="muted"></p>
+            </div>
+
+            <div>
+                <div
+                        id="preview-map"
+                        aria-label="Map of selected destination"
+                ></div>
+
+                <p id="preview-map-status" class="muted"></p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        Place search: Open-Meteo / GeoNames · Photos: Wikimedia Commons ·
+        Maps: OpenStreetMap contributors.
+
+        <p>
+            Choose a result to preview it. Click its photo to open the
+            destination page.
+        </p>
+    </footer>
+</main>
+</body>
+</html>

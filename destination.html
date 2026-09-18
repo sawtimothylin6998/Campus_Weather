@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#12a8d6">
+
+    <title>Pookie Bear Destination Guide</title>
+
+    <link rel="icon" type="image/png" href="pookie-bear-icon.png">
+
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin=""
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+    <script
+            src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""
+            defer
+    ></script>
+
+    <script src="destination.js" defer></script>
+    <script src="dashboard.js" defer></script>
+</head>
+
+<body>
+<main>
+    <header>
+        <div class="destination-topbar">
+            <a
+                    class="brand-lockup compact"
+                    href="index.html"
+                    aria-label="Pookie Bear Campus Explorer home"
+            >
+                <img src="pookie-bear-icon.png" alt="Pookie Bear icon">
+
+                <span>
+            <strong>Pookie Bear</strong>
+            <small>Campus Explorer</small>
+          </span>
+            </a>
+
+            <a class="back-link" href="index.html">
+                ← Search another place
+            </a>
+        </div>
+
+        <p class="eyebrow" id="destination-type"></p>
+        <h1 id="destination-name">Destination</h1>
+        <p id="destination-subtitle"></p>
+
+        <nav class="section-nav" aria-label="Destination sections">
+            <a href="#destination-weather">Weather</a>
+            <a href="#exchange">Currency</a>
+            <a href="#news">News</a>
+            <a href="#destination-about">About</a>
+        </nav>
+    </header>
+
+    <p id="destination-error" role="alert" hidden></p>
+
+    <section id="destination-about">
+        <div class="facts">
+            <div>
+                <span>Country</span>
+                <strong id="fact-country">—</strong>
+            </div>
+
+            <div>
+                <span>Local time</span>
+                <strong id="fact-time">—</strong>
+            </div>
+
+            <div>
+                <span>Currency</span>
+                <strong id="fact-currency">Checking…</strong>
+            </div>
+        </div>
+
+        <div
+                id="destination-map"
+                aria-label="Destination map"
+        ></div>
+
+        <p id="destination-map-status" class="muted"></p>
+    </section>
+
+    <section id="destination-weather" class="dashboard-section">
+        <div class="map-heading">
+            <h2>Weather at this location</h2>
+
+            <button
+                    id="destination-refresh"
+                    type="button"
+                    class="secondary"
+            >
+                Refresh weather
+            </button>
+        </div>
+
+        <p
+                id="destination-weather-status"
+                role="status"
+                aria-live="polite"
+        ></p>
+
+        <div
+                id="destination-weather-result"
+                class="current"
+                hidden
+        >
+            <div>
+                <h2 id="destination-temperature"></h2>
+                <p id="destination-condition"></p>
+            </div>
+
+            <div>
+                <p id="destination-feels"></p>
+                <p id="destination-humidity"></p>
+                <p id="destination-wind"></p>
+            </div>
+        </div>
+
+        <p id="destination-weather-time" class="muted"></p>
+
+        <p class="muted">
+            Open-Meteo estimates at the map marker. A country’s weather
+            varies by region.
+        </p>
+    </section>
+
+    <section
+            id="exchange"
+            class="dashboard-section"
+            aria-labelledby="exchange-title"
+    >
+        <h2 id="exchange-title">Currency converter</h2>
+
+        <p class="muted">
+            Daily reference rates. Banks and money changers may offer
+            different rates and charge fees.
+        </p>
+
+        <form id="exchange-form">
+            <div class="currency-grid">
+                <div>
+                    <label for="amount">Amount</label>
+
+                    <input
+                            id="amount"
+                            type="number"
+                            min="0"
+                            max="1000000000000"
+                            step="any"
+                            value="100"
+                            required
+                    >
+                </div>
+
+                <div>
+                    <label for="currency-from">From</label>
+
+                    <select
+                            id="currency-from"
+                            aria-label="From currency"
+                    ></select>
+                </div>
+
+                <div>
+                    <label for="currency-to">To</label>
+
+                    <select
+                            id="currency-to"
+                            aria-label="To currency"
+                    ></select>
+                </div>
+            </div>
+
+            <div class="currency-actions">
+                <button id="convert" type="submit">
+                    Convert
+                </button>
+
+                <button id="swap" class="secondary" type="button">
+                    Swap currencies
+                </button>
+            </div>
+        </form>
+
+        <p
+                id="currency-list-status"
+                class="muted"
+                role="status"
+        ></p>
+
+        <p
+                id="exchange-status"
+                role="status"
+                aria-live="polite"
+        ></p>
+
+        <div id="exchange-result" hidden>
+            <p id="conversion" class="conversion"></p>
+            <p id="rate-detail" class="muted"></p>
+        </div>
+
+        <p class="muted">
+            Rate source:
+            <a
+                    href="https://frankfurter.dev/"
+                    target="_blank"
+                    rel="noopener"
+            >
+                Frankfurter
+            </a>.
+            Amounts are calculated in your browser.
+        </p>
+    </section>
+
+    <section
+            id="news"
+            class="dashboard-section"
+            aria-labelledby="news-title"
+    >
+        <div class="map-heading">
+            <h2 id="news-title">News for this destination</h2>
+
+            <button
+                    id="news-refresh"
+                    class="secondary"
+                    type="button"
+            >
+                Refresh news
+            </button>
+        </div>
+
+        <p class="muted">
+            Recent headlines are searched using the selected country or
+            city name.
+        </p>
+
+        <p
+                id="news-status"
+                role="status"
+                aria-live="polite"
+        ></p>
+
+        <ol id="news-list"></ol>
+
+        <p class="muted">
+            Source:
+            <a
+                    id="news-source-link"
+                    href="https://news.google.com/"
+                    target="_blank"
+                    rel="noopener"
+            >
+                Google News
+            </a>
+            · Feed delivered through
+            <a
+                    href="https://rss2json.com/"
+                    target="_blank"
+                    rel="noopener"
+            >
+                rss2json
+            </a>.
+            Feed updates may be delayed.
+        </p>
+    </section>
+
+    <footer>
+        Weather and places: Open-Meteo / GeoNames · Country currencies:
+        Unicode CLDR · Currency: Frankfurter · News: Google News through
+        rss2json · Map: OpenStreetMap contributors.
+    </footer>
+</main>
+</body>
+</html>
